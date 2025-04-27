@@ -6,27 +6,35 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>You want to cut a cake by some method?</h1>
+    <h1>You want to cut cakes or pizzas by some methods?</h1>
     
     <div class="container">
         <div class="image-container">
             <div class="image-block">
-                <img src="image1.jpg" alt="Image 1">
-                <input type="text" placeholder="入力1">
-                <input type="text" placeholder="入力2">
+                <img src="image1.jpg" alt="radically">
+                <input type="text" id="rad_divnum">
+                <label for="rad_divnum">Number of divisions</label>
+                <input type="text" id="rad_diameter">
+                <label for="rad_diameter">Diameter of the circle</label>
+                <button>送信</button>
             </div>
             <div class="image-block">
-                <img src="image2.jpg" alt="Image 2">
-                <input type="text" placeholder="入力1">
-                <input type="text" placeholder="入力2">
+                <img src="image2.jpg" alt="vertically">
+                <input type="text" id="vert_divnum">
+                <label for="vert_divnum">Number of divisions</label>
+                <input type="text" id="vert_diameter">
+                <label for="vert_diameter">Diameter of the circle</label>
+                <button>送信</button>
             </div>
             <div class="image-block">
-                <img src="image3.jpg" alt="Image 3">
-                <input type="text" placeholder="入力1">
-                <input type="text" placeholder="入力2">
+                <img src="image3.jpg" alt="zigzag">
+                <input type="text" id="zigzag_divnum">
+                <label for="zigzag_divnum">Number of divisions</label>
+                <input type="text" id="zigzag_diameter">
+                <label for="zigzag_diameter">Diameter of the circle</label>
+                <button>送信</button>
             </div>
         </div>
-        <button>送信</button>
     </div>
 </body>
 </html>
