@@ -62,6 +62,8 @@ label {
     font-size: 14px;
     pointer-events: none; /* ユーザーがクリックできないようにする */
     transition: 0.3s;
+    display: block;
+    height: 20px;
 }
 
 input:focus + label, input:not(:placeholder-shown) + label {
