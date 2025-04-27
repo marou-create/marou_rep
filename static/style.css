@@ -59,23 +59,16 @@ button:hover {
     padding-top: 30px; /* ラベルが上に移動できる余白を確保 */
 }
 
-label {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #888;
-    font-size: 14px;
-    transition: 0.3s ease-in-out;
-    pointer-events: none;
+.input-group {
+    position: relative;
+    padding-top: 40px;
 }
-
-/* アクティブ状態のラベル */
-label.active {
-    top: 5px;
-    left: 5px;
-    font-size: 12px;
-    color: #333;
+  
+  label {
+    position: absolute;
+    transition: 0.2s;
+    top: 50%;
+    translate: 0 -50%;
 }
 
 /* JavaScriptが適用されない場合の予備対応 */

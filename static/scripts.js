@@ -1,15 +1,11 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const inputs = document.querySelectorAll(".image-block input");
+const inputs = document.querySelectorAll(".input");
 
-    inputs.forEach((input) => {
-        input.addEventListener("focus", function () {
-            input.nextElementSibling.classList.add("active");
-        });
-
-        input.addEventListener("blur", function () {
-            if (input.value === "") {
-                input.nextElementSibling.classList.remove("active");
-            }
-        });
-    });
+inputs.forEach((input) => {
+  input.onchange = function () {
+    if (input.value !== "") {
+      input.classList.add("filled");
+    } else {
+      input.classList.remove("filled");
+    }
+  };
 });
