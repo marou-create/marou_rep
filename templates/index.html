@@ -12,27 +12,42 @@
     <div class="container">
         <div class="image-container">
             <div class="image-block">
-                <img src="image1.jpg" alt="radically">
-                <label for="rad_divnum">Number of divisions</label>
-                <input type="text" id="rad_divnum" name="rad_divnum" class="input">
-                <label for="rad_diameter">Diameter of the circle</label>
-                <input type="text" id="rad_diameter" name="rad_diameter" class="input">
-                <button>送信</button>
-            </div>
-            <div class="image-block">
-                <img src="image2.jpg" alt="vertically">
-                <label for="vert_divnum">Number of divisions</label>
-                <input type="text" id="vert_divnum" name="vert_divnum" class="input">
-                <label for="vert_diameter">Diameter of the circle</label>
-                <input type="text" id="vert_diameter" name="vert_diameter" class="input">
-                <button>送信</button>
-            </div>
-            <div class="image-block">
-                <img src="image3.jpg" alt="zigzag">
-                <label for="zigzag_divnum">Number of divisions</label>
-                <input type="text" id="zigzag_divnum" name="zigzag_divnum" class="input">
-                <label for="zigzag_diameter">Diameter of the circle</label>
-                <input type="text" id="zigzag_diameter" name="zigzag_diameter" class="input">
+                <img src="coming_soon.jpg" alt="radically">
+                <input type="text" id="rad_divnum" name="rad_divnum" class="input" list="divnum_list" title="分割数を選択してください">
+                <datalist id="divnum_list">
+                  <!-- 3～20までの選択肢を用意 -->
+                  <option value="3"></option>
+                  <option value="4"></option>
+                  <option value="5"></option>
+                  <option value="6"></option>
+                  <option value="7"></option>
+                  <option value="8"></option>
+                  <option value="9"></option>
+                  <option value="10"></option>
+                  <option value="11"></option>
+                  <option value="12"></option>
+                  <option value="13"></option>
+                  <option value="14"></option>
+                  <option value="15"></option>
+                  <option value="16"></option>
+                  <option value="17"></option>
+                  <option value="18"></option>
+                  <option value="19"></option>
+                  <option value="20"></option>
+                  <input type="text" id="rad_divnum" name="rad_divnum" class="input" list="divnum_list" title="直径を選択してください">
+                  <datalist id="divnum_list"></datalist>
+
+                  <script>
+                    const divnumList = document.getElementById("divnum_list");
+
+                    let options = "";
+                    Array.from({ length: 18 }, (_, i) => i + 3).forEach(i => {
+                        options += `<option value="${i}"></option>`;
+                    });
+
+                    divnumList.innerHTML = options;
+                  </script>
+                    </datalist>
                 <button>送信</button>
             </div>
         </div>
