@@ -11,19 +11,26 @@
         <img src="coming_soon.jpg" alt="radically">
         <input type="text" id="rad_divnum" name="rad_divnum" class="input" list="divnum_list" title="分割数を選択してください"> 
         <datalist id="divnum_list"></datalist>
-            <script>
+        <script>
             const inputField = document.getElementById("rad_divnum");
             const divnumList = document.getElementById("divnum_list");
-
-            inputField.addEventListener("focus", () => {
-                divnumList.innerHTML = ""; // 一度リストをクリア
-                let options = "";
-                Array.from({ length: 18 }, (_, i) => i + 3).forEach(i => {
+          
+            function updateDatalist() {
+              divnumList.innerHTML = ""; // リストをクリア
+              let options = "";
+              Array.from({ length: 18 }, (_, i) => i + 3).forEach(i => {
                 options += `<option value="${i}"></option>`;
-                });
-                divnumList.innerHTML = options; // リストを再生成
+              });
+              divnumList.innerHTML = options; // 再生成
+            }
+          
+            // 初回リスト生成
+            updateDatalist();
+          
+            inputField.addEventListener("focus", () => {
+              updateDatalist(); // フォーカス時に再生成
             });
-            </script>
+          </script>
         <button>送信</button>
 </body>
 </html>
