@@ -20,8 +20,14 @@
             });
 
             divnumList.innerHTML = options;
-            </script>
 
+            const inputField = document.getElementById("rad_divnum");
+
+            inputField.addEventListener("focus", () => {
+            inputField.value = ""; // フォーカス時に値をクリア
+            });
+
+            </script>
         <button>送信</button>
 </body>
 </html>
