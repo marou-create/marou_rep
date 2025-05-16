@@ -12,21 +12,17 @@
         <input type="text" id="rad_divnum" name="rad_divnum" class="input" list="divnum_list" title="分割数を選択してください"> 
         <datalist id="divnum_list"></datalist>
             <script>
+            const inputField = document.getElementById("rad_divnum");
             const divnumList = document.getElementById("divnum_list");
 
-            let options = "";
-            Array.from({ length: 18 }, (_, i) => i + 3).forEach(i => {
-                options += `<option value="${i}"></option>`;
-            });
-
-            divnumList.innerHTML = options;
-
-            const inputField = document.getElementById("rad_divnum");
-
             inputField.addEventListener("focus", () => {
-            inputField.value = ""; // フォーカス時に値をクリア
+                divnumList.innerHTML = ""; // 一度リストをクリア
+                let options = "";
+                Array.from({ length: 18 }, (_, i) => i + 3).forEach(i => {
+                options += `<option value="${i}"></option>`;
+                });
+                divnumList.innerHTML = options; // リストを再生成
             });
-
             </script>
         <button>送信</button>
 </body>
