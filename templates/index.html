@@ -8,29 +8,45 @@
 </head>
 <body>
     <h1>You want to cut cakes or pizzas by a unique method?</h1>
-        <img src="coming_soon.jpg" alt="radically">
-        <input type="text" id="rad_divnum" name="rad_divnum" class="input" list="divnum_list" title="分割数を選択してください"> 
-        <datalist id="divnum_list"></datalist>
-        <script>
-            const inputField = document.getElementById("rad_divnum");
+            <img src="coming_soon.jpg" alt="zigzag"><br>
+            <form id="dataForm" method="post">
+                <input type="text" id="rad_divnum" name="rad_divnum" class="input" list="divnum_list" title="分割数を選択してください"> 
+                <datalist id="divnum_list"></datalist>
+                <button type="submit">送信</button>
+            </form>
+            <!-- 分割数をリスト化-->
+            <script>
             const divnumList = document.getElementById("divnum_list");
-          
-            function updateDatalist() {
-              divnumList.innerHTML = ""; // リストをクリア
-              let options = "";
-              Array.from({ length: 18 }, (_, i) => i + 3).forEach(i => {
+            let options = "";
+            Array.from({ length: 18 }, (_, i) => i + 3).forEach(i => 
+            {
                 options += `<option value="${i}"></option>`;
-              });
-              divnumList.innerHTML = options; // 再生成
-            }
-          
-            // 初回リスト生成
-            updateDatalist();
-          
-            inputField.addEventListener("focus", () => {
-              updateDatalist(); // フォーカス時に再生成
             });
-          </script>
-        <button>送信</button>
+            divnumList.innerHTML = options;
+            </script>
+
+            <!-- 画像を表示 -->
+            <img id="circleImage" style="display: none; margin-top: 10px;">
+
+            <script>
+            document.getElementById("dataForm").addEventListener("submit", function(event) {
+                event.preventDefault();
+
+                const formData = new FormData(event.target);
+
+                fetch("/draw_circle", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.blob())  // 画像データを受け取る
+                .then(blob => {
+                    const imgUrl = URL.createObjectURL(blob);
+                    const imgElement = document.getElementById("circleImage");
+                    imgElement.src = imgUrl;
+                    imgElement.style.display = "block";  // 画像を表示
+                });
+            });
+            </script>
+            
 </body>
 </html>
