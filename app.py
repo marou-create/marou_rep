@@ -34,67 +34,73 @@ def draw_circle():
 
 @app.route('/divide_circle', methods=['POST'])
 def divide_circle():
+    """ 円の分割数を取得し、計算・描画する """
+    n_str = request.form.get("zigzag_divnum", "5")  # デフォルト値を文字列にする
+    try:
+        n: int = int(n_str)
+    except ValueError:
+        n = 5
+
     # ケーキを何等分するか(n: 3以上の分割数)
-    n = float(request.form.get("zigzag_divnum", 5))  # POSTリクエストで円の分割数を取得
+    n: int = int(request.form.get("zigzag_divnum", 5)) # POSTリクエストで円の分割数を取得
 
     # i行j列のデータフレームを作成するメソッド
     # 第3引数には可変長引数を使用し、カラム名をj個指定できる（j個以外のカラム数を指定するとValueErrorになる）
-    def make_df(i, j, *args):
-        df = pd.DataFrame([[0]*j for k in range(i)])
-        df = df.set_axis(list(args),axis='columns')
+    def make_df(i: int, j: int, *args: str) -> pd.DataFrame:
+        df = pd.DataFrame([[0] * j for _ in range(i)], columns=list(args))
         return df
 
-    # sin, cos, tanのメソッドを定義（コードを書きやすくするため）
-    def sin(theta):
+
+    # sin, cos, tanの簡略化（コードを書きやすくするため）
+    def sin(theta: float) -> float:
         return np.sin(theta)
-    def cos(theta):
+
+    def cos(theta: float) -> float:
         return np.cos(theta)
-    def tan(theta):
+
+    def tan(theta: float) -> float:
         return np.tan(theta)
+
     # 円の半径
-    r = 1
+    r: int = 1
 
     # 円の中心から最も近い円周角に関する式を定義
     # 分割数の偶奇によって立てる式が異なる
-    def angle_initial(theta):
+    def angle_initial(theta: float) -> float:
         if n % 2 == 1:
             return sin(theta) + theta - np.pi/n
         else:
             return (1/2)*sin(2*theta) + theta - np.pi/n
 
     # 一番端の弦からなる円周角phiに関する式
-    def angle_phi(phi):
+    def angle_phi(phi: float) -> float:
         return phi - (1/2)*sin(2*phi) - np.pi/n
 
     # 円周角thetaの円周
-    def calc_circle(theta):
+    def calc_circle(theta: float) -> float:
         return 2*r*theta
     # 円周角thetaの弦の長さ
-    def calc_chord(theta):
+    def calc_chord(theta: float) -> float:
         return 2*r*sin(theta)
     # radianからdegreeに変換するメソッド
-    def convert_rad_to_deg(theta):
+    def convert_rad_to_deg(theta: float) -> float:
         return np.degrees(theta)
 
     # 格納しておく角度の変数の数n
     # 半円のうち、円の中心から最も近い領域(theta_init)と最も遠い領域(phi)を除いた領域(REST)の数m
-    if n % 2 == 1:
-        n_theta = int((n-1)/2)
-        m = int((n-3)/2)
-    else:
-        n_theta = int((n-2)/2)
-        m = int((n-4)/2)
+    n_theta = (n-1)//2 if n % 2 == 1 else (n-2)//2
+    m = (n-3)//2 if n % 2 == 1 else (n-4)//2
 
     # 円周角と、その円周角に対する弦および周の長さを格納する配列を定義
     # 1列目：theta、2列目：弦、3列目：周になる
     try:
         df_theta = make_df(n_theta, 6, 'θ[radian]', 'θ[degree]', 'chord(θ)', 'circle(θ)', 'sin(θ)', 'cos(θ)')
     except ValueError:
-        print('第2引数と同じ数だけのカラム名を、タプル（カンマで区切った要素）で指定してください')
+        raise ValueError('第2引数と同じ数だけのカラム名を、タプル（カンマで区切った要素）で指定してください')
     #df_theta = pd.DataFrame([[0]*6 for i in range(n_theta)]).set_axis(['θ[radian]', 'θ[degree]', 'chord(θ)', 'circle(θ)', 'sin(θ)', 'cos(θ)'], axis='columns')
 
     # i番目の角度θが分かったらこのメソッドを実行する
-    def set_object(i, theta):
+    def set_object(i: int, theta: float) -> None:
         df_theta.loc[i,['θ[radian]']] = theta
         df_theta.loc[i,['θ[degree]']] = convert_rad_to_deg(df_theta['θ[radian]'][i])
         df_theta.loc[i,['chord(θ)']] = calc_chord(df_theta['θ[radian]'][i])
@@ -138,16 +144,17 @@ def divide_circle():
 
     # 取り敢えず、thetaとphiを求めておく　初期値をπ/(n+6)として計算する
     # これらの値を求めるメソッドは、何分割しようと変わらない
-    theta_init = fsolve(angle_initial, np.pi/(n+6))[0]
-    phi = fsolve(angle_phi, np.pi/6)[0]
+    theta_init: float = fsolve(angle_initial, np.pi/(n+6))[0]
+    phi: float = fsolve(angle_phi, np.pi/6)[0]
     # 0番目の角度thetaが分かったので各値を挿入
     set_object(0, theta_init)
 
     # 角度αを定義
-    if n % 2 == 0:
-        alpha = np.pi/2 - theta_init
-    else:
-        alpha = (np.pi-theta_init)/2
+    alpha: float = np.pi/2 - theta_init if n % 2 == 0 else (np.pi-theta_init)/2
+    # if n % 2 == 0:
+    #     alpha = np.pi/2 - theta_init
+    # else:
+    #     alpha = (np.pi-theta_init)/2
     # 使うか分からないが、phiとtheta_initの単位をdegreeに変換したものを新たな変数に代入
     phi_deg = convert_rad_to_deg(phi)
     # theta_init_deg = convert_rad_to_deg(phi)
@@ -237,7 +244,7 @@ def divide_circle():
         return df['y(θ)'][i]
 
     # 角度と座標を挿入するメソッド
-    def insert_object_into_P(i, theta):
+    def insert_object_into_P(i: int, theta: float) -> None:
         df_P.loc[i,['θ[radian]']] = theta
         df_P_dash.loc[i,['θ[radian]']] = theta
         if n % 2 == 1:
