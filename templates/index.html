@@ -10,7 +10,7 @@
     <h1>You want to cut cakes or pizzas by a unique method?</h1>
             <img src="coming_soon.jpg" alt="zigzag"><br>
             <form id="dataForm" method="post">
-                <input type="text" id="rad_divnum" name="radius" class="input" list="divnum_list" title="分割数を選択してください"> 
+                <input type="text" id="rad_divnum" name="zigzag_divnum" class="input" list="divnum_list" title="分割数を選択してください"> 
                 <datalist id="divnum_list"></datalist>
                 <button type="submit">送信</button>
             </form>
@@ -34,7 +34,7 @@
 
                 const formData = new FormData(event.target);
 
-                fetch("/draw_circle", {
+                fetch("/divide_circle", {
                     method: "POST",
                     body: formData
                 })

@@ -1,3 +1,7 @@
 Flask
 Gunicorn
 matplotlib
+scipy
+pandas
+numpy
+warnings
